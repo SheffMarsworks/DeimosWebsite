@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from DeimosBackend.endpoints import computational_resources
 urlpatterns = [
+    path('comp_resource', computational_resources),
     path('admin/', admin.site.urls),
 ]
