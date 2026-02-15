@@ -1,7 +1,7 @@
 import roslibpy
 import subprocess
 from django.utils import timezone
-from DeimosBackend.models import TopicHealth
+#from DeimosBackend.models import TopicHealth
 
 def perform_ros_check():
     """
