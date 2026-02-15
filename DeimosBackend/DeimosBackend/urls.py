@@ -17,7 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from DeimosBackend.endpoints import computational_resources
+from DeimosBackend.endpoints import topiclist
+#from DeimosBackend.views import TopicStatusView
+#from DeimosBackend.views import TopicGet
 urlpatterns = [
     path('comp_resource', computational_resources),
     path('admin/', admin.site.urls),
+    path('api/robot/topiclist/', topiclist),
 ]
