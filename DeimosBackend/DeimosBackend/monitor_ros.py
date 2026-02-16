@@ -56,4 +56,14 @@ def list_ros_topic():
         
     except FileNotFoundError:
         return ["Error: ROS 2 environment not sourced or installed"]
+def start_process(start_cmd):
+    print(start_cmd)
+    try:
+        result = subprocess.Popen(
+            start_cmd, #Spawn process in background
+            shell=True,
+        )
+        return "Start Success"
+    except FileNotFoundError:
+        return "Invalid node name"
 
