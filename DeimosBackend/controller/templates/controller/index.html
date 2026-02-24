@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deimos Rover Control</title>
+    <style>
+        button {
+            font-size: 24px;
+            padding: 15px;
+            margin: 10px;
+            width: 80px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Deimos Rover Control Panel</h1>
+
+    <div style="text-align:center;">
+        <div>
+            <button onclick="sendCommand('forward')">⬆</button>
+        </div>
+        <div>
+            <button onclick="sendCommand('left')">⬅</button>
+            <button onclick="sendCommand('stop')">⏹</button>
+            <button onclick="sendCommand('right')">➡</button>
+        </div>
+        <div>
+            <button onclick="sendCommand('backward')">⬇</button>
+        </div>
+    </div>
+
+    <script>
+    const socket = new WebSocket("ws://127.0.0.1:8000/ws/control/");
+
+    socket.onopen = () => {
+        console.log("WebSocket connected");
+    };
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+
+        if (data.cpu !== undefined) {
+            document.getElementById("cpu-value").innerText = data.cpu;
+            document.getElementById("cpu-bar").style.width = data.cpu + "%";
+        }
+
+        if (data.ram !== undefined) {
+            document.getElementById("ram-value").innerText = data.ram;
+            document.getElementById("ram-bar").style.width = data.ram + "%";
+        }
+
+        if (data.heartbeat) {
+            document.getElementById("heartbeat").innerText = "🟢";
+        }
+    };
+
+    function sendCommand(cmd) {
+        socket.send(JSON.stringify({
+            command: cmd
+        }));
+    }
+</script>
+<h2>Telemetry</h2>
+
+<div>
+    <p>CPU Usage: <span id="cpu-value">0</span>%</p>
+    <div style="background:#ddd; width:300px;">
+        <div id="cpu-bar" style="height:20px; width:0%; background:green;"></div>
+    </div>
+</div>
+
+<br>
+
+<div>
+    <p>RAM Usage: <span id="ram-value">0</span>%</p>
+    <div style="background:#ddd; width:300px;">
+        <div id="ram-bar" style="height:20px; width:0%; background:blue;"></div>
+    </div>
+</div>
+
+<br>
+
+<p>Heartbeat: <span id="heartbeat">🔴</span></p>
+</body>
+</html>
